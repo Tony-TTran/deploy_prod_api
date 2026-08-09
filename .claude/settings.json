@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "mkdir -p .claude 2>/dev/null\nstate=\".claude/.readme-hook-state\"\nchanges=$( { git status --porcelain -- . ':(exclude)README.md' ':(exclude).claude' 2>/dev/null; git diff -- . ':(exclude)README.md' ':(exclude).claude' 2>/dev/null; } )\nif [ -z \"$changes\" ]; then exit 0; fi\nhash=$(printf '%s' \"$changes\" | git hash-object --stdin 2>/dev/null)\nlast=\"\"\n[ -f \"$state\" ] && last=$(cat \"$state\")\nif [ \"$hash\" = \"$last\" ]; then exit 0; fi\nprintf '%s' \"$hash\" > \"$state\"\nprintf '{\"decision\":\"block\",\"reason\":\"Files changed this turn. If any of these changes affect functionality, behavior, CLI/API, config, or setup steps (not just formatting, comments, tests, or non-README docs), update README.md to reflect them before finishing.\"}'\n",
+            "shell": "bash",
+            "timeout": 15,
+            "statusMessage": "Checking if README.md needs updating..."
+          }
+        ]
+      }
+    ]
+  }
+}
