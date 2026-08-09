@@ -1,5 +1,6 @@
 # deploy_prod_api
-Building end to end CICD pipeline 
+
+Building end to end CICD pipeline
 
 ## Getting Started
 
@@ -29,6 +30,8 @@ The server listens on `PORT` (from a `.env` file) or defaults to `3000`.
 ESLint (`@eslint/js` recommended rules) plus Prettier are configured via `eslint.config.js`.
 
 ```
-npx eslint .          # check for lint/formatting issues
-npx eslint . --fix    # auto-fix what it can
+npm run lint           # check for lint/formatting issues
+npm run lint:fix        # auto-fix what it can
+npm run format          # apply Prettier formatting
+npm run format:check    # check formatting without writing changes
 ```
