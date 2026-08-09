@@ -23,3 +23,12 @@ The server listens on `PORT` (from a `.env` file) or defaults to `3000`.
 - `src/index.js` — entry point; loads `.env` via `dotenv/config`, then boots `src/server.js`.
 - `src/server.js` — imports the Express app from `src/app.js` and starts it with `app.listen()`.
 - `src/app.js` — defines the Express app and its routes (no server startup here).
+
+## Linting & Formatting
+
+ESLint (`@eslint/js` recommended rules) plus Prettier are configured via `eslint.config.js`.
+
+```
+npx eslint .          # check for lint/formatting issues
+npx eslint . --fix    # auto-fix what it can
+```

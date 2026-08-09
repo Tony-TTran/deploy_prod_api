@@ -1,13 +1,17 @@
 {
   "dependencies": {
+    "@eslint/js": "^10.0.1",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1"
+    "eslint": "^10.8.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.6",
+    "express": "^5.2.1",
+    "prettier": "^3.9.6"
   },
   "name": "deploy_prod_api",
   "version": "1.0.0",
   "description": "Building end to end CICD pipeline",
   "main": "src/index.js",
-  "devDependencies": {},
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js"
