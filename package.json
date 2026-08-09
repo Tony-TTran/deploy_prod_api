@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "@eslint/js": "^10.0.1",
+    "@neondatabase/serverless": "^1.1.0",
     "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
     "eslint": "^10.8.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.6",
@@ -18,7 +20,10 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "repository": {
     "type": "git",
@@ -31,5 +36,8 @@
   "bugs": {
     "url": "https://github.com/Tony-TTran/deploy_prod_api/issues"
   },
-  "homepage": "https://github.com/Tony-TTran/deploy_prod_api#readme"
+  "homepage": "https://github.com/Tony-TTran/deploy_prod_api#readme",
+  "devDependencies": {
+    "drizzle-kit": "^0.31.10"
+  }
 }
