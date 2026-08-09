@@ -1,0 +1,4 @@
+{"level":"info","message":"Received request for home page","service":"acquisitions-api","timestamp":"2026-08-09T21:23:13.243Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:21:23:13 +0000] \"GET / HTTP/1.1\" 200 13 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.19041.6456\"","service":"acquisitions-api","timestamp":"2026-08-09T21:23:13.249Z"}
+{"level":"info","message":"Received request for home page","service":"acquisitions-api","timestamp":"2026-08-09T21:28:54.126Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:21:28:54 +0000] \"GET / HTTP/1.1\" 304 - \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.132.0 Chrome/148.0.7778.280 Electron/42.7.1 Safari/537.36\"","service":"acquisitions-api","timestamp":"2026-08-09T21:28:54.134Z"}

@@ -19,14 +19,27 @@ npm run dev      # node --watch src/index.js (auto-restarts on file changes)
 
 The server listens on `PORT` (from a `.env` file) or defaults to `3000`.
 
+Every request passes through: `helmet` (security-related HTTP headers), `express.json()` / `express.urlencoded()` (JSON and form body parsing), and `morgan` (Apache-style request logging, piped into the `winston` logger at `src/config/logger.js` — see `logs/combined.log`).
+
 ## Project Structure
 
 - `src/index.js` — entry point; loads `.env` via `dotenv/config`, then boots `src/server.js`.
 - `src/server.js` — imports the Express app from `src/app.js` and starts it with `app.listen()`.
-- `src/app.js` — defines the Express app and its routes (no server startup here).
+- `src/app.js` — defines the Express app, middleware (`helmet`, `morgan`), and routes (no server startup here).
 - `src/config/database.js` — creates the Neon SQL client and the Drizzle `db` instance used to query it.
 - `src/models/` — Drizzle table schema definitions (picked up by `drizzle-kit` for migrations).
 - `drizzle.config.js` — `drizzle-kit` configuration: where schema files live, where generated migrations go, and the DB connection string.
+- `src/config/logger.js` — a `winston` logger (file transports for errors/combined logs, plus console output outside production).
+
+## Import Aliases
+
+This project uses Node's [subpath imports](https://nodejs.org/api/packages.html#subpath-imports) (the `imports` field in `package.json`) so internal modules can be imported by alias instead of relative paths:
+
+```js
+import logger from '#config/logger.js';
+```
+
+Available aliases (each maps `#name/*` → `./src/name/*`): `#config`, `#controllers`, `#models`, `#routes`, `#utils`, `#validate`, `#services`, `#middleware`.
 
 ## Architecture
 
