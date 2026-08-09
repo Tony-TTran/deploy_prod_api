@@ -6,10 +6,11 @@
   "name": "deploy_prod_api",
   "version": "1.0.0",
   "description": "Building end to end CICD pipeline",
-  "main": "index.js",
+  "main": "src/index.js",
   "devDependencies": {},
   "scripts": {
-    "dev": "node --watch index.js"
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
   },
   "repository": {
     "type": "git",
