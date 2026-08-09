@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  },
+  "name": "deploy_prod_api",
+  "version": "1.0.0",
+  "description": "Building end to end CICD pipeline",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "dev": "node --watch index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tony-TTran/deploy_prod_api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Tony-TTran/deploy_prod_api/issues"
+  },
+  "homepage": "https://github.com/Tony-TTran/deploy_prod_api#readme"
+}
