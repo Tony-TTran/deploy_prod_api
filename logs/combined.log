@@ -2,3 +2,32 @@
 {"level":"info","message":"::1 - - [09/Aug/2026:21:23:13 +0000] \"GET / HTTP/1.1\" 200 13 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.19041.6456\"","service":"acquisitions-api","timestamp":"2026-08-09T21:23:13.249Z"}
 {"level":"info","message":"Received request for home page","service":"acquisitions-api","timestamp":"2026-08-09T21:28:54.126Z"}
 {"level":"info","message":"::1 - - [09/Aug/2026:21:28:54 +0000] \"GET / HTTP/1.1\" 304 - \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.132.0 Chrome/148.0.7778.280 Electron/42.7.1 Safari/537.36\"","service":"acquisitions-api","timestamp":"2026-08-09T21:28:54.134Z"}
+{"level":"info","message":"Received request for home page","service":"acquisitions-api","timestamp":"2026-08-09T22:30:28.410Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:22:30:28 +0000] \"GET / HTTP/1.1\" 304 - \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.132.0 Chrome/148.0.7778.280 Electron/42.7.1 Safari/537.36\"","service":"acquisitions-api","timestamp":"2026-08-09T22:30:28.421Z"}
+{"level":"info","message":"Received request for home page","service":"acquisitions-api","timestamp":"2026-08-09T22:33:51.278Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:22:33:51 +0000] \"GET / HTTP/1.1\" 304 - \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.132.0 Chrome/148.0.7778.280 Electron/42.7.1 Safari/537.36\"","service":"acquisitions-api","timestamp":"2026-08-09T22:33:51.286Z"}
+{"level":"info","message":"Received request for home page","service":"acquisitions-api","timestamp":"2026-08-09T22:34:10.572Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:22:34:10 +0000] \"GET / HTTP/1.1\" 304 - \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.132.0 Chrome/148.0.7778.280 Electron/42.7.1 Safari/537.36\"","service":"acquisitions-api","timestamp":"2026-08-09T22:34:10.573Z"}
+{"level":"warn","message":"404 Not Found: GET /heath","service":"acquisitions-api","timestamp":"2026-08-09T22:34:18.371Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:22:34:18 +0000] \"GET /heath HTTP/1.1\" 404 21 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.132.0 Chrome/148.0.7778.280 Electron/42.7.1 Safari/537.36\"","service":"acquisitions-api","timestamp":"2026-08-09T22:34:18.375Z"}
+{"level":"info","message":"Health check endpoint called","service":"acquisitions-api","timestamp":"2026-08-09T22:34:26.349Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:22:34:26 +0000] \"GET /health HTTP/1.1\" 200 15 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.132.0 Chrome/148.0.7778.280 Electron/42.7.1 Safari/537.36\"","service":"acquisitions-api","timestamp":"2026-08-09T22:34:26.349Z"}
+{"level":"info","message":"Health check endpoint called","service":"acquisitions-api","timestamp":"2026-08-09T22:35:16.980Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:22:35:16 +0000] \"GET /health HTTP/1.1\" 200 54 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.132.0 Chrome/148.0.7778.280 Electron/42.7.1 Safari/537.36\"","service":"acquisitions-api","timestamp":"2026-08-09T22:35:16.986Z"}
+{"level":"info","message":"API endpoint called","service":"acquisitions-api","timestamp":"2026-08-09T22:35:51.943Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:22:35:51 +0000] \"GET /api HTTP/1.1\" 200 67 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.132.0 Chrome/148.0.7778.280 Electron/42.7.1 Safari/537.36\"","service":"acquisitions-api","timestamp":"2026-08-09T22:35:51.944Z"}
+{"level":"warn","message":"404 Not Found: GET /api/auth","service":"acquisitions-api","timestamp":"2026-08-09T22:35:56.682Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:22:35:56 +0000] \"GET /api/auth HTTP/1.1\" 404 21 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.132.0 Chrome/148.0.7778.280 Electron/42.7.1 Safari/537.36\"","service":"acquisitions-api","timestamp":"2026-08-09T22:35:56.683Z"}
+{"level":"info","message":"API endpoint called","service":"acquisitions-api","timestamp":"2026-08-09T22:36:20.172Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:22:36:20 +0000] \"GET /api/ HTTP/1.1\" 200 67 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.132.0 Chrome/148.0.7778.280 Electron/42.7.1 Safari/537.36\"","service":"acquisitions-api","timestamp":"2026-08-09T22:36:20.173Z"}
+{"level":"info","message":"Received request for home page","service":"acquisitions-api","timestamp":"2026-08-09T23:38:41.152Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:23:38:41 +0000] \"GET / HTTP/1.1\" 200 13 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-08-09T23:38:41.156Z"}
+{"level":"info","message":"API endpoint called","service":"acquisitions-api","timestamp":"2026-08-09T23:39:00.726Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:23:39:00 +0000] \"GET /api HTTP/1.1\" 200 67 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-08-09T23:39:00.733Z"}
+{"level":"warn","message":"404 Not Found: POST /api/auth","service":"acquisitions-api","timestamp":"2026-08-09T23:39:08.557Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:23:39:08 +0000] \"POST /api/auth HTTP/1.1\" 404 21 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-08-09T23:39:08.558Z"}
+{"level":"warn","message":"404 Not Found: PUT /api/auth","service":"acquisitions-api","timestamp":"2026-08-09T23:39:13.569Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:23:39:13 +0000] \"PUT /api/auth HTTP/1.1\" 404 21 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-08-09T23:39:13.570Z"}
+{"level":"warn","message":"404 Not Found: POST /api/auth","service":"acquisitions-api","timestamp":"2026-08-09T23:41:26.952Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:23:41:26 +0000] \"POST /api/auth HTTP/1.1\" 404 21 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-08-09T23:41:26.960Z"}
+{"level":"info","message":"::1 - - [09/Aug/2026:23:42:18 +0000] \"POST /api/auth/sign-in HTTP/1.1\" 200 28 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-08-09T23:42:18.537Z"}

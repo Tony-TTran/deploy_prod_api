@@ -11,9 +11,11 @@
     "eslint-plugin-prettier": "^5.5.6",
     "express": "^5.2.1",
     "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
     "morgan": "^1.11.0",
     "prettier": "^3.9.6",
-    "winston": "^3.19.0"
+    "winston": "^3.19.0",
+    "zod": "^4.4.3"
   },
   "name": "deploy_prod_api",
   "version": "1.0.0",
