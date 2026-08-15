@@ -2,6 +2,7 @@
   "dependencies": {
     "@eslint/js": "^10.0.1",
     "@neondatabase/serverless": "^1.1.0",
+    "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
@@ -27,7 +28,7 @@
     "#models/*": "./src/models/*",
     "#routes/*": "./src/routes/*",
     "#utils/*": "./src/utils/*",
-    "#validate/*": "./src/validate/*",
+    "#validate/*": "./src/validations/*",
     "#services/*": "./src/services/*",
     "#middleware/*": "./src/middleware/*"
   },
