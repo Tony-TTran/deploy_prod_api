@@ -13,7 +13,11 @@ app.use(helmet()); // sets security-related HTTP headers on every response
 app.use(cors()); // allows requests from other origins (adds CORS headers)
 app.use(express.json()); // parses JSON request bodies into req.body
 app.use(express.urlencoded({ extended: true })); // parses form (x-www-form-urlencoded) bodies into req.body
-app.use(morgan('combined', { stream: { write: (message) => logger.info(message.trim()) } })); // logs each request via winston
+app.use(
+  morgan('combined', {
+    stream: { write: (message) => logger.info(message.trim()) },
+  })
+); // logs each request via winston
 app.use(cookieParser()); // parses the Cookie header into req.cookies
 
 app.get('/', (req, res) => {
@@ -30,7 +34,9 @@ app.get('/health', (req, res) => {
 // Simple sanity-check endpoint confirming the API is reachable.
 app.get('/api', (req, res) => {
   logger.info('API endpoint called');
-  res.status(200).json({ message: 'api is running', timestamp: new Date().toISOString() });
+  res
+    .status(200)
+    .json({ message: 'api is running', timestamp: new Date().toISOString() });
 });
 
 // Everything in auth.routes.js (sign-up/sign-in/sign-out) is reachable under /api/auth/*.
@@ -44,7 +50,9 @@ app.use((req, res, next) => {
 
 // Error-handling middleware (4 args = Express treats this specially): catches errors
 // passed via next(err) or thrown in async route handlers, logs them, and returns a
-// generic 500 instead of leaking internals to the client.
+// generic 500 instead of leaking internals to the client. `next` is required so
+// Express recognizes this as error-handling middleware (checked via fn arity),
+
 app.use((err, req, res, next) => {
   logger.error(`Error: ${err.message}`, { stack: err.stack });
   res.status(500).json({ error: 'Internal Server Error' });

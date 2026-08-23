@@ -23,14 +23,14 @@ Every request passes through, in order: `helmet` (security-related HTTP headers)
 
 ## API Endpoints
 
-| Method | Path | Notes |
-|---|---|---|
-| GET | `/` | Basic hello-world route |
-| GET | `/health` | Liveness check (status + timestamp) — for uptime monitors / load balancers |
-| GET | `/api` | Sanity-check that the API is reachable |
-| POST | `/api/auth/sign-up` | Validates the body against `signUpSchema` (Zod) and returns the would-be user — not yet wired to password hashing or the database |
-| POST | `/api/auth/sign-in` | Placeholder — not yet wired to credential checking or issuing a JWT |
-| POST | `/api/auth/sign-out` | Placeholder — not yet wired to clearing the auth cookie |
+| Method | Path                 | Notes                                                                                                                             |
+| ------ | -------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| GET    | `/`                  | Basic hello-world route                                                                                                           |
+| GET    | `/health`            | Liveness check (status + timestamp) — for uptime monitors / load balancers                                                        |
+| GET    | `/api`               | Sanity-check that the API is reachable                                                                                            |
+| POST   | `/api/auth/sign-up`  | Validates the body against `signUpSchema` (Zod), hashes the password, creates the user in the database, signs a JWT, and sets it as a cookie |
+| POST   | `/api/auth/sign-in`  | Placeholder — not yet wired to credential checking or issuing a JWT                                                               |
+| POST   | `/api/auth/sign-out` | Placeholder — not yet wired to clearing the auth cookie                                                                           |
 
 Any unmatched route returns a `404 { error: "Not Found" }`. Unhandled errors passed to `next(err)` are caught by a final error-handling middleware, logged via `winston`, and returned as a generic `500 { error: "Internal Server Error" }`.
 
@@ -76,6 +76,7 @@ flowchart LR
     F[drizzle.config.js] -. "npm run db:generate / db:migrate" .-> E
     F --> G[src/models/*.js<br/>table schemas]
 ```
+
 <sub>*`verify` is broken — see the note under `src/utils/jwt.js` in Project Structure.</sub>
 
 Request flow: `index.js` loads env vars → `server.js` starts the HTTP server around the app defined in `app.js` → middleware runs → route handlers respond. `/api/auth/sign-in` and `/api/auth/sign-out` are still placeholder handlers; `/api/auth/sign-up` now validates its body against `signUpSchema` and logs via `winston`, but the JWT and cookie helpers aren't called from any route yet. The database layer (`config/database.js`, using Drizzle + the Neon serverless driver) is set up but not yet called from any route — once a route imports `db` from `src/config/database.js`, it can query Neon Postgres using schemas defined in `src/models/`. Migrations are managed separately via `drizzle-kit` (`npm run db:generate`, `npm run db:migrate`, `npm run db:studio`), driven by `drizzle.config.js`.

@@ -9,12 +9,12 @@ router.post('/sign-up', signup);
 
 // POST /api/auth/sign-in — placeholder; not yet wired to credential checking or issuing a JWT.
 router.post('/sign-in', (req, res) => {
-    res.send('POST /api/auth/sign-in route');
+  res.send('POST /api/auth/sign-in route');
 });
 
 // POST /api/auth/sign-out — placeholder; not yet wired to clearing the auth cookie.
 router.post('/sign-out', (req, res) => {
-    res.send('POST /api/auth/sign-out route');
+  res.send('POST /api/auth/sign-out route');
 });
 
 export default router;
