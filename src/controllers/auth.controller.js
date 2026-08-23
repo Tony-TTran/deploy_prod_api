@@ -3,7 +3,7 @@ import { signUpSchema } from '#validate/auth.validation.js';
 import { formatValidationErrors } from '#utils/format.js';
 import { createUser } from '#services/auth.service.js';
 import { cookies } from '#utils/cookies.js';
-import jwt from 'jsonwebtoken';
+import { jwt_token } from '#utils/jwt.js';
 
 export const signup = async (req, res, next) => {
   try {
@@ -18,7 +18,7 @@ export const signup = async (req, res, next) => {
     const { name, email, password, role } = validationResult.data;
 
     const user = await createUser({ name, email, password, role });
-    const token = jwt.sign({ id: user.id, email: user.email, role: user.role });
+    const token = jwt_token.sign({ id: user.id, email: user.email, role: user.role });
     cookies.set(res, 'token', token);
 
     logger.info('Creating user with email:', email);
@@ -33,7 +33,7 @@ export const signup = async (req, res, next) => {
     });
   } catch (error) {
     logger.error('Error in signup controller:', error);
-    if (error.message === 'User with this email already exists') {
+    if (error.message === 'User already exists') {
       return res.status(409).json({ message: error.message });
     }
     next(error); // Pass the error to the global error handler

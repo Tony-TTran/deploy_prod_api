@@ -14,15 +14,23 @@ export const hashPassword = async (password) => {
 };
 
 export const createUser = async ({ name, email, password, role = 'user' }) => {
+  let existingUser;
   try {
-    const existingUser = await db
+    existingUser = await db
       .select()
       .from(users)
       .where(eq(users.email, email))
       .limit(1);
-    if (existingUser.length > 0) {
-      throw new Error('User already exists');
-    }
+  } catch (error) {
+    logger.error('Error checking for existing user:', error);
+    throw new Error('Error checking for existing user', { cause: error });
+  }
+
+  if (existingUser.length > 0) {
+    throw new Error('User already exists');
+  }
+
+  try {
     const hashedPassword = await hashPassword(password);
     const [newUser] = await db
       .insert(users)
@@ -36,9 +44,9 @@ export const createUser = async ({ name, email, password, role = 'user' }) => {
         updatedAt: users.updatedAt,
       });
     logger.info(`User created: ${newUser.email}`);
-    return newUser[0];
+    return newUser;
   } catch (error) {
-    logger.error('Error checking for existing user:', error);
-    throw new Error('Error checking for existing user', { cause: error });
+    logger.error('Error creating user:', error);
+    throw new Error('Error creating user', { cause: error });
   }
 };

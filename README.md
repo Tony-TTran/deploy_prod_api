@@ -28,7 +28,7 @@ Every request passes through, in order: `helmet` (security-related HTTP headers)
 | GET    | `/`                  | Basic hello-world route                                                                                                           |
 | GET    | `/health`            | Liveness check (status + timestamp) — for uptime monitors / load balancers                                                        |
 | GET    | `/api`               | Sanity-check that the API is reachable                                                                                            |
-| POST   | `/api/auth/sign-up`  | Validates the body against `signUpSchema` (Zod), hashes the password, creates the user in the database, signs a JWT, and sets it as a cookie |
+| POST   | `/api/auth/sign-up`  | Validates the body against `signUpSchema` (Zod), hashes the password, creates the user in the database, signs a JWT, and sets it as a cookie. Returns `409 { message: "User already exists" }` if the email is already registered. |
 | POST   | `/api/auth/sign-in`  | Placeholder — not yet wired to credential checking or issuing a JWT                                                               |
 | POST   | `/api/auth/sign-out` | Placeholder — not yet wired to clearing the auth cookie                                                                           |
 
@@ -41,7 +41,7 @@ Any unmatched route returns a `404 { error: "Not Found" }`. Unhandled errors pas
 - `src/app.js` — defines the Express app, middleware, routes, and the 404/error handlers (no server startup here).
 - `src/routes/auth.routes.js` — `/api/auth/*` route definitions (currently placeholder handlers).
 - `src/validations/auth.validation.js` — Zod schemas (`signUpSchema`, `signInSchema`) describing expected request bodies; `signUpSchema` is applied in `signup` (`src/controllers/auth.controller.js`), `signInSchema` isn't wired in yet.
-- `src/utils/jwt.js` — `jwt_token.sign()` wraps `jsonwebtoken` to issue tokens. **Known bug**: `jwt_token.verify` is not actually defined due to a brace-scoping mistake (it's dead code inside `sign`, not a sibling object property) — calling `jwt_token.verify(...)` currently throws `TypeError: jwt_token.verify is not a function`.
+- `src/utils/jwt.js` — `jwt_token.sign()` / `jwt_token.verify()` wrap `jsonwebtoken` to issue/validate tokens against `JWT_SECRET`; used by `signup` (`src/controllers/auth.controller.js`) to sign the auth cookie's token.
 - `src/utils/cookies.js` — `cookies.set/get/clear` helpers with shared cookie defaults (httpOnly, secure in production, 24h maxAge) — intended for storing an auth token cookie.
 - `src/utils/format.js` — `formatValidationErrors()` turns a Zod validation error into a single readable string.
 - `src/config/database.js` — creates the Neon SQL client and the Drizzle `db` instance used to query it.
@@ -68,18 +68,16 @@ flowchart LR
     end
     B --> C[src/app.js<br/>middleware + routes]
     C --> R[src/routes/auth.routes.js<br/>/api/auth/*]
-    R -. "not yet wired in" .-> J[src/utils/jwt.js<br/>sign / verify*]
+    R --> J[src/utils/jwt.js<br/>sign / verify]
     R --> V[src/validations/auth.validation.js<br/>Zod schemas]
-    R -. "not yet wired in" .-> K[src/utils/cookies.js<br/>set / get / clear]
-    C -. "not yet wired in" .-> D[src/config/database.js<br/>drizzle db client]
+    R --> K[src/utils/cookies.js<br/>set / get / clear]
+    C --> D[src/config/database.js<br/>drizzle db client]
     D --> E[(Neon Postgres)]
     F[drizzle.config.js] -. "npm run db:generate / db:migrate" .-> E
     F --> G[src/models/*.js<br/>table schemas]
 ```
 
-<sub>*`verify` is broken — see the note under `src/utils/jwt.js` in Project Structure.</sub>
-
-Request flow: `index.js` loads env vars → `server.js` starts the HTTP server around the app defined in `app.js` → middleware runs → route handlers respond. `/api/auth/sign-in` and `/api/auth/sign-out` are still placeholder handlers; `/api/auth/sign-up` now validates its body against `signUpSchema` and logs via `winston`, but the JWT and cookie helpers aren't called from any route yet. The database layer (`config/database.js`, using Drizzle + the Neon serverless driver) is set up but not yet called from any route — once a route imports `db` from `src/config/database.js`, it can query Neon Postgres using schemas defined in `src/models/`. Migrations are managed separately via `drizzle-kit` (`npm run db:generate`, `npm run db:migrate`, `npm run db:studio`), driven by `drizzle.config.js`.
+Request flow: `index.js` loads env vars → `server.js` starts the HTTP server around the app defined in `app.js` → middleware runs → route handlers respond. `/api/auth/sign-in` and `/api/auth/sign-out` are still placeholder handlers; `/api/auth/sign-up` validates its body against `signUpSchema`, calls `createUser` (`src/services/auth.service.js`) to check for an existing user, hash the password, and insert the new user via Drizzle/Neon, then signs a JWT via `jwt_token.sign` (`src/utils/jwt.js`) and sets it as a cookie via `cookies.set`. A duplicate email returns `409 { message: "User already exists" }`. Migrations are managed separately via `drizzle-kit` (`npm run db:generate`, `npm run db:migrate`, `npm run db:studio`), driven by `drizzle.config.js`.
 
 ## Database (Neon + Drizzle)
 
