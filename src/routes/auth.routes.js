@@ -1,20 +1,15 @@
 import express from 'express';
-import { signup } from '../controllers/auth.controller.js';
+import { signup, signin, signout } from '../controllers/auth.controller.js';
 // Router for everything mounted under /api/auth in app.js.
 const router = express.Router();
 
-// Example route for user login
-// POST /api/auth/sign-up — placeholder; not yet wired to validation, hashing, or the database.
+// POST /api/auth/sign-up — validates the body, hashes the password, creates the user, signs a JWT cookie.
 router.post('/sign-up', signup);
 
-// POST /api/auth/sign-in — placeholder; not yet wired to credential checking or issuing a JWT.
-router.post('/sign-in', (req, res) => {
-  res.send('POST /api/auth/sign-in route');
-});
+// POST /api/auth/sign-in — validates credentials against the database and signs a JWT cookie.
+router.post('/sign-in', signin);
 
-// POST /api/auth/sign-out — placeholder; not yet wired to clearing the auth cookie.
-router.post('/sign-out', (req, res) => {
-  res.send('POST /api/auth/sign-out route');
-});
+// POST /api/auth/sign-out — clears the auth cookie.
+router.post('/sign-out', signout);
 
 export default router;

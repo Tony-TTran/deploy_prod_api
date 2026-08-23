@@ -29,8 +29,8 @@ Every request passes through, in order: `helmet` (security-related HTTP headers)
 | GET    | `/health`            | Liveness check (status + timestamp) — for uptime monitors / load balancers                                                        |
 | GET    | `/api`               | Sanity-check that the API is reachable                                                                                            |
 | POST   | `/api/auth/sign-up`  | Validates the body against `signUpSchema` (Zod), hashes the password, creates the user in the database, signs a JWT, and sets it as a cookie. Returns `409 { message: "User already exists" }` if the email is already registered. |
-| POST   | `/api/auth/sign-in`  | Placeholder — not yet wired to credential checking or issuing a JWT                                                               |
-| POST   | `/api/auth/sign-out` | Placeholder — not yet wired to clearing the auth cookie                                                                           |
+| POST   | `/api/auth/sign-in`  | Validates the body against `signInSchema` (Zod), looks up the user by email and checks the password, signs a JWT, and sets it as a cookie. Returns `401 { message: "Invalid email or password" }` for either a missing user or a wrong password (same message for both, to avoid leaking which one it was). |
+| POST   | `/api/auth/sign-out` | Clears the auth cookie                                                                                                            |
 
 Any unmatched route returns a `404 { error: "Not Found" }`. Unhandled errors passed to `next(err)` are caught by a final error-handling middleware, logged via `winston`, and returned as a generic `500 { error: "Internal Server Error" }`.
 
@@ -39,10 +39,11 @@ Any unmatched route returns a `404 { error: "Not Found" }`. Unhandled errors pas
 - `src/index.js` — entry point; loads `.env` via `dotenv/config`, then boots `src/server.js`.
 - `src/server.js` — imports the Express app from `src/app.js` and starts it with `app.listen()`.
 - `src/app.js` — defines the Express app, middleware, routes, and the 404/error handlers (no server startup here).
-- `src/routes/auth.routes.js` — `/api/auth/*` route definitions (currently placeholder handlers).
-- `src/validations/auth.validation.js` — Zod schemas (`signUpSchema`, `signInSchema`) describing expected request bodies; `signUpSchema` is applied in `signup` (`src/controllers/auth.controller.js`), `signInSchema` isn't wired in yet.
-- `src/utils/jwt.js` — `jwt_token.sign()` / `jwt_token.verify()` wrap `jsonwebtoken` to issue/validate tokens against `JWT_SECRET`; used by `signup` (`src/controllers/auth.controller.js`) to sign the auth cookie's token.
-- `src/utils/cookies.js` — `cookies.set/get/clear` helpers with shared cookie defaults (httpOnly, secure in production, 24h maxAge) — intended for storing an auth token cookie.
+- `src/routes/auth.routes.js` — `/api/auth/*` route definitions, wired to `signup` / `signin` / `signout` in `src/controllers/auth.controller.js`.
+- `src/validations/auth.validation.js` — Zod schemas (`signUpSchema`, `signInSchema`) describing expected request bodies; applied in `signup` and `signin` respectively (`src/controllers/auth.controller.js`).
+- `src/services/auth.service.js` — `createUser()` (checks for a duplicate email, hashes the password, inserts the row) and `authenticateUser()` (looks up by email, verifies the password with `comparePassword()`), both against the `users` table via Drizzle/Neon.
+- `src/utils/jwt.js` — `jwt_token.sign()` / `jwt_token.verify()` wrap `jsonwebtoken` to issue/validate tokens against `JWT_SECRET`; used by `signup` and `signin` (`src/controllers/auth.controller.js`) to sign the auth cookie's token.
+- `src/utils/cookies.js` — `cookies.set/get/clear` helpers with shared cookie defaults (httpOnly, secure in production, 24h maxAge); `set` is used by `signup`/`signin` to store the JWT, `clear` is used by `signout`.
 - `src/utils/format.js` — `formatValidationErrors()` turns a Zod validation error into a single readable string.
 - `src/config/database.js` — creates the Neon SQL client and the Drizzle `db` instance used to query it.
 - `src/models/` — Drizzle table schema definitions (picked up by `drizzle-kit` for migrations). Currently: `users` (id, name, email, password, role, timestamps).
@@ -77,7 +78,7 @@ flowchart LR
     F --> G[src/models/*.js<br/>table schemas]
 ```
 
-Request flow: `index.js` loads env vars → `server.js` starts the HTTP server around the app defined in `app.js` → middleware runs → route handlers respond. `/api/auth/sign-in` and `/api/auth/sign-out` are still placeholder handlers; `/api/auth/sign-up` validates its body against `signUpSchema`, calls `createUser` (`src/services/auth.service.js`) to check for an existing user, hash the password, and insert the new user via Drizzle/Neon, then signs a JWT via `jwt_token.sign` (`src/utils/jwt.js`) and sets it as a cookie via `cookies.set`. A duplicate email returns `409 { message: "User already exists" }`. Migrations are managed separately via `drizzle-kit` (`npm run db:generate`, `npm run db:migrate`, `npm run db:studio`), driven by `drizzle.config.js`.
+Request flow: `index.js` loads env vars → `server.js` starts the HTTP server around the app defined in `app.js` → middleware runs → route handlers respond. `/api/auth/sign-up` validates its body against `signUpSchema`, calls `createUser` (`src/services/auth.service.js`) to check for an existing user, hash the password, and insert the new user via Drizzle/Neon, then signs a JWT via `jwt_token.sign` (`src/utils/jwt.js`) and sets it as a cookie via `cookies.set`; a duplicate email returns `409 { message: "User already exists" }`. `/api/auth/sign-in` validates its body against `signInSchema`, calls `authenticateUser` to look up the user by email and verify the password, then signs/sets the same kind of JWT cookie; a missing user or wrong password both return `401 { message: "Invalid email or password" }`. `/api/auth/sign-out` clears the auth cookie via `cookies.clear`. Migrations are managed separately via `drizzle-kit` (`npm run db:generate`, `npm run db:migrate`, `npm run db:studio`), driven by `drizzle.config.js`.
 
 ## Database (Neon + Drizzle)
 
