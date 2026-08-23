@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import routes from '#routes/auth.routes.js'; // router mounted under /api/auth below
+import securityMiddleware from '#middleware/security.middleware.js';
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(
   })
 ); // logs each request via winston
 app.use(cookieParser()); // parses the Cookie header into req.cookies
+app.use(securityMiddleware); // custom security middleware for rate limiting and bot detection
 
 app.get('/', (req, res) => {
   logger.info('Received request for home page');
